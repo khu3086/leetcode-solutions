@@ -8,9 +8,6 @@ public:
             prefix.push_back(prefix[i]+nums[i]);
         }
         int ans=0;
-        for(auto x: prefix){
-            cout<<x<<endl;
-        }
         n=prefix.size();
         for(int i=0;i<n;i++){
             for(int j=i+1;j<n;j++){
