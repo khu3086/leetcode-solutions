@@ -14,20 +14,20 @@ public:
         while(curr<=high){
             if(nums[curr]==2){
                 swap(nums[curr], nums[high]);
-                cout<<"swapped"<<nums[curr]<<"&"<<nums[high]<<endl;
+                //cout<<"swapped"<<nums[curr]<<"&"<<nums[high]<<endl;
                 high--;
             }
             else if(nums[curr]==1){
                 curr++;
-                cout<<"kuch ni bc"<<endl;
+                //cout<<"kuch ni bc"<<endl;
             }
             else{
                 swap(nums[curr], nums[low]);
-                cout<<"swapped"<<nums[curr]<<"&"<<nums[low]<<endl;
+                //cout<<"swapped"<<nums[curr]<<"&"<<nums[low]<<endl;
                 low++;
                 curr++;
             }
-            printarr(nums);
+            //printarr(nums);
         }
     }
 };
