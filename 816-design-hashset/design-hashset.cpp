@@ -1,20 +1,20 @@
 class MyHashSet {
 public:
-    vector<vector<bool>> arr;
+    bitset<1000001> bset;
     MyHashSet() {
-        arr.assign(10000, vector<bool>(10000, false));
+        bset.reset();
     }
     
     void add(int key) {
-        arr[key/1000][key%1000]=true;
+        bset.set(key);
     }
     
     void remove(int key) {
-        arr[key/1000][key%1000]=false;
+        bset.reset(key);
     }
     
     bool contains(int key) {
-        return arr[key/1000][key%1000];
+        return bset.test(key);
     }
 };
 
