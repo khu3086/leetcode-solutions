@@ -1,1 +1,1 @@
-These are my solutions for NEETCODE 250 DSA problems list. 
+These are my solutions for Neetcode 250 DSA problems list. 
