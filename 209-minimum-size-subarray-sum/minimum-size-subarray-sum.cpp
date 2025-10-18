@@ -6,14 +6,12 @@ public:
         int minlen=INT_MAX;
         for(int right=0;right<nums.size();right++){
             currsum+=nums[right];
-            if(currsum<target) continue;
-            minlen=min(minlen, right-left+1);
-            while(currsum>=target){
-                currsum-=nums[left];
+            // shrink window while it's valid
+            while (currsum >= target) {
+                minlen = min(minlen, right - left + 1);
+                currsum -= nums[left];
                 left++;
-                if(currsum>=target) minlen=min(minlen, right-left+1);
             }
-            //minlen=min(minlen, right-left+1);
         }
         return minlen==INT_MAX?0:minlen;
     }
