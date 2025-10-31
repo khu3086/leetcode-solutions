@@ -11,7 +11,7 @@ public:
         }
         vector<int> ans;
         for(int i=0;i<n-2;i++){
-            cout<<nums[i]<<" ";
+            
             if(nums[i]>0) ans.push_back(i);
         }
         return ans;
