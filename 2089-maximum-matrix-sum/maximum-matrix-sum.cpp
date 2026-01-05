@@ -20,7 +20,6 @@ public:
         if(isZero) return sum;
         if(leastNegNum!=INT_MAX) leastNegNum*=2;
         if(numNeg%2) sum-=leastNegNum;
-        cout<<leastNegNum<<" ";
         return sum;
     }
 };
