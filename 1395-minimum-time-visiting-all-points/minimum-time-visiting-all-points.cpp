@@ -10,11 +10,7 @@ public:
             dy=abs(points[i][1]-points[i+1][1]);
             int additive=min(dx, dy);
             int maxitive=max(dx, dy);
-            if(additive==maxitive) ans+=additive;
-            else{
-                ans+=additive;
-                ans+=maxitive-additive;
-            }
+            ans+=maxitive;
         }
         return ans;
     }
