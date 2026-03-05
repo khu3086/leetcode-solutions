@@ -13,7 +13,7 @@ public:
             if(s[i+1]-'0'!=1) ans2++;
         }
         if(n%2 && (s[n-1]-'0'!=0)) ans2++;
-        return min(ans1, ans2);
+        return min(ans1, n-ans1);
 
         }
 };
