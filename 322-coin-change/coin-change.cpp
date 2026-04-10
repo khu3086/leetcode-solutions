@@ -1,8 +1,6 @@
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
-        //vector<vector<int>> dp(amount+1, vector<int>(amount+1, -1));
-        //sort(coins.begin(), coins.end());
         vector<int> dp(amount+1, INT_MAX);
         dp[0]=0;
         for(int i=1;i<=amount;i++){
