@@ -1,18 +1,19 @@
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        int len=s.length();
-        vector<bool> dp(len+1, false);
+        int n=s.length();
+        vector<bool> dp(n+1, false);
         dp[0]=true;
-        for(int i=0;i<=len;i++){
+        for(int i=1;i<=n;i++){
             for(auto word: wordDict){
                 if(i>=word.length()){
-                    if(s.substr(i-word.length(), word.length())==word){
-                        dp[i] =dp[i]||dp[i - word.length()];
+                    string tmp=s.substr(i-word.length(), word.length());
+                    if(tmp==word){
+                        dp[i]=dp[i-word.length()]||dp[i];
                     }
                 }
             }
         }
-        return dp[len];
+        return dp[n];
     }
 };
