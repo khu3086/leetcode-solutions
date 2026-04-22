@@ -1,53 +1,60 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        queue<pair<int, int>> q;
-        int row=grid.size();
-        int col=grid[0].size();
-        int minmax=0;
+        int row = grid.size();
+        int col = grid[0].size();
 
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
-                if(grid[i][j]==2){
+        queue<pair<int, int>> q;
+        int fresh = 0;
+
+        // collect all sources
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(grid[i][j] == 2) {
                     q.push({i, j});
                 }
+                else if(grid[i][j] == 1){
+                    fresh++;
+                }
             }
         }
 
-        while(!q.empty()){
+        int minutes = 0;
+
+        // single BFS
+        while(!q.empty() && fresh > 0){
             int size = q.size();
-            minmax++;
+            minutes++;
+
             while(size--){
-                auto x= q.front();
-                int ii=x.first;
-                int jj=x.second;
+                auto top = q.front();
                 q.pop();
+                int i = top.first;
+                int j = top.second;
 
-                if(ii>0&&grid[ii-1][jj]==1){
-                    q.push({ii-1, jj});
-                    grid[ii-1][jj]=2;
+                if(i>0 && grid[i-1][j]==1){
+                    grid[i-1][j]=2;
+                    fresh--;
+                    q.push({i-1, j});
                 }
-                if(jj>0&&grid[ii][jj-1]==1){
-                    q.push({ii, jj-1});
-                    grid[ii][jj-1]=2;
+                if(j>0 && grid[i][j-1]==1){
+                    grid[i][j-1]=2;
+                    fresh--;
+                    q.push({i, j-1});
                 }
-                if(ii < row-1 && grid[ii+1][jj]==1){
-                    q.push({ii+1, jj});
-                    grid[ii+1][jj]=2;
+                if(i<row-1 && grid[i+1][j]==1){
+                    grid[i+1][j]=2;
+                    fresh--;
+                    q.push({i+1, j});
                 }
-                if(jj < col-1 && grid[ii][jj+1]==1){
-                    q.push({ii, jj+1});
-                    grid[ii][jj+1]=2;
+                if(j<col-1 && grid[i][j+1]==1){
+                    grid[i][j+1]=2;
+                    fresh--;
+                    q.push({i, j+1});
                 }
             }
         }
 
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
-                if(grid[i][j]==1) return -1;
-            }
-        }
-
-        return minmax==0 ? 0 : minmax-1;
+        return (fresh == 0) ? minutes : -1;
     }
 };
