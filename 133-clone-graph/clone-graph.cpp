@@ -1,31 +1,45 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
 class Solution {
 public:
     Node* cloneGraph(Node* node) {
-        if (!node) return nullptr;
-
-        unordered_map<Node*, Node*> mp;
+         if (node == nullptr) return nullptr;
+        unordered_map<Node*, Node*> map;
         queue<Node*> q;
-
-        // Create first node
-        mp[node] = new Node(node->val);
         q.push(node);
-
-        while (!q.empty()) {
-            Node* curr = q.front();
+        map[node]=new Node(node->val);
+        while(!q.empty()){
+            Node* top=q.front();
             q.pop();
-
-            for (auto neighbor : curr->neighbors) {
-                // If not cloned yet
-                if (mp.find(neighbor) == mp.end()) {
-                    mp[neighbor] = new Node(neighbor->val);
-                    q.push(neighbor);
+            for(auto x: top->neighbors){
+                if(map.find(x)==map.end()){
+                    map[x] = new Node(x->val);
+                    q.push(x);  // ✅ push to queue for BFS
                 }
-
-                // Add neighbor to cloned node
-                mp[curr]->neighbors.push_back(mp[neighbor]);
+                (map[top]->neighbors).push_back(map[x]);
             }
-        }
 
-        return mp[node];
+        }
+        return map[node];
+
     }
 };
