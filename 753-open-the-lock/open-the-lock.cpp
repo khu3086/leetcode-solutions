@@ -1,81 +1,44 @@
 class Solution {
 public:
     int openLock(vector<string>& deadends, string target) {
-        unordered_set<string> myset;
-        for(auto x: deadends) myset.insert(x);
-        if(myset.find("0000")!=myset.end()) return -1;
         unordered_set<string> visited;
-        queue<pair<string, int>> q;
-        q.push({"0000", 0});
+        unordered_set<string> dead;
         visited.insert("0000");
+        for(auto x: deadends) dead.insert(x);
+        if(dead.find("0000")!=dead.end()) return -1;
+        if(dead.find(target)!=dead.end()) return -1;
+        queue<string> q;
+        q.push("0000");
+        int turn =0;
         while(!q.empty()){
-            auto top=q.front();
-            q.pop();
-            int moves=top.second;
-            string num=top.first;
-            string temp=num;
-            if(num==target) return moves;
-            //num[0]+1
-            int repl=(num[0]-'0'+1)%10+'0';
-            temp[0]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
-            //num[0]-1
-             repl=(num[0]-'0'+9)%10+'0';
-            temp[0]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
-            temp=num;
-            //num[1]+1
-             repl=(num[1]-'0'+1)%10+'0';
-            temp[1]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
-            //num[1]-1
-             repl=(num[1]-'0'+9)%10+'0';
-            temp[1]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
-            temp=num;
-            //num[2]+1
-             repl=(num[2]-'0'+1)%10+'0';
-            temp[2]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
-            //num[2]-1
-             repl=(num[2]-'0'+9)%10+'0';
-            temp[2]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
-            temp=num;
-            //num[3]+1
-             repl=(num[3]-'0'+1)%10+'0';
-            temp[3]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
-            //num[3]-1
-             repl=(num[3]-'0'+9)%10+'0';
-            temp[3]=repl;
-            if(visited.find(temp)==visited.end()&&myset.find(temp)==myset.end()){
-                visited.insert(temp);
-                q.push({temp, moves+1});
-            }
+    int size = q.size();   // ✅ ADD THIS LINE
 
+    for(int k = 0; k < size; k++){   // ✅ ADD THIS LOOP
+        string top = q.front();
+        q.pop();
+
+        if(top == target) return turn;
+
+        vector<string> tocheck;
+        for(int i=0;i<4;i++){
+            string temp=top;
+            temp[i]=(temp[i]-'0'+9)%10+'0';
+            tocheck.push_back(temp);
+            temp=top;
+            temp[i]=(temp[i]-'0'+1)%10+'0';
+            tocheck.push_back(temp);
         }
-        return -1;
+
+        for(auto x: tocheck){
+            if(dead.find(x)==dead.end() && visited.find(x)==visited.end()){
+                q.push(x);
+                visited.insert(x);
+            }
+        }
+    }
+
+    turn++;   // ✅ MOVED HERE (after processing level)
+}
+return -1;
     }
 };
