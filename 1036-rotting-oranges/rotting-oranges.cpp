@@ -5,56 +5,57 @@ public:
         int col = grid[0].size();
 
         queue<pair<int, int>> q;
-        int fresh = 0;
 
-        // collect all sources
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                if(grid[i][j] == 2) {
-                    q.push({i, j});
-                }
-                else if(grid[i][j] == 1){
-                    fresh++;
-                }
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i][j]==2) q.push({i, j});
             }
         }
 
-        int minutes = 0;
+        int curr = 0;
 
-        // single BFS
-        while(!q.empty() && fresh > 0){
-            int size = q.size();
-            minutes++;
+        while(!q.empty()){
+            int k = q.size();
+            bool spread = false;   // ✅ track if anything rotted
 
-            while(size--){
-                auto top = q.front();
+            for(int i=0;i<k;i++){
+                auto idx = q.front();
                 q.pop();
-                int i = top.first;
-                int j = top.second;
 
-                if(i>0 && grid[i-1][j]==1){
-                    grid[i-1][j]=2;
-                    fresh--;
-                    q.push({i-1, j});
+                int x = idx.first;
+                int y = idx.second;
+
+                if(x>0 && grid[x-1][y]==1){
+                    grid[x-1][y]=2;
+                    q.push({x-1, y});
+                    spread = true;
                 }
-                if(j>0 && grid[i][j-1]==1){
-                    grid[i][j-1]=2;
-                    fresh--;
-                    q.push({i, j-1});
+                if(y>0 && grid[x][y-1]==1){
+                    grid[x][y-1]=2;
+                    q.push({x, y-1});
+                    spread = true;
                 }
-                if(i<row-1 && grid[i+1][j]==1){
-                    grid[i+1][j]=2;
-                    fresh--;
-                    q.push({i+1, j});
+                if(x<row-1 && grid[x+1][y]==1){
+                    grid[x+1][y]=2;
+                    q.push({x+1, y});
+                    spread = true;
                 }
-                if(j<col-1 && grid[i][j+1]==1){
-                    grid[i][j+1]=2;
-                    fresh--;
-                    q.push({i, j+1});
+                if(y<col-1 && grid[x][y+1]==1){
+                    grid[x][y+1]=2;
+                    q.push({x, y+1});
+                    spread = true;
                 }
+            }
+
+            if(spread) curr++;   // ✅ increment only if spread happened
+        }
+
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i][j]==1) return -1;
             }
         }
 
-        return (fresh == 0) ? minutes : -1;
+        return curr;
     }
 };
