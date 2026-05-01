@@ -1,44 +1,89 @@
 class Solution {
 public:
     int openLock(vector<string>& deadends, string target) {
-        unordered_set<string> visited;
         unordered_set<string> dead;
-        visited.insert("0000");
-        for(auto x: deadends) dead.insert(x);
-        if(dead.find("0000")!=dead.end()) return -1;
-        if(dead.find(target)!=dead.end()) return -1;
         queue<string> q;
+        for(auto d: deadends) dead.insert(d);
+
+        if(dead.find("0000")!=dead.end()) return -1;
+
         q.push("0000");
-        int turn =0;
+        unordered_set<string> visited;
+        visited.insert("0000");
+
+        int curr = 0;
+
         while(!q.empty()){
-    int size = q.size();   // ✅ ADD THIS LINE
+            int k = q.size();
 
-    for(int k = 0; k < size; k++){   // ✅ ADD THIS LOOP
-        string top = q.front();
-        q.pop();
+            for(int i = 0; i < k; i++) {
+                string top = q.front();
+                q.pop();
 
-        if(top == target) return turn;
+                if(top == target) return curr;
 
-        vector<string> tocheck;
-        for(int i=0;i<4;i++){
-            string temp=top;
-            temp[i]=(temp[i]-'0'+9)%10+'0';
-            tocheck.push_back(temp);
-            temp=top;
-            temp[i]=(temp[i]-'0'+1)%10+'0';
-            tocheck.push_back(temp);
-        }
+                string temp = top;
 
-        for(auto x: tocheck){
-            if(dead.find(x)==dead.end() && visited.find(x)==visited.end()){
-                q.push(x);
-                visited.insert(x);
+                temp = top;
+                temp[0]=(temp[0]-'0'+1)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
+
+                temp = top;
+                temp[0]=(temp[0]-'0'+9)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
+
+                temp = top;
+                temp[1]=(temp[1]-'0'+1)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
+
+                temp = top;
+                temp[1]=(temp[1]-'0'+9)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
+
+                temp = top;
+                temp[2]=(temp[2]-'0'+1)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
+
+                temp = top;
+                temp[2]=(temp[2]-'0'+9)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
+
+                temp = top;
+                temp[3]=(temp[3]-'0'+1)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
+
+                temp = top;
+                temp[3]=(temp[3]-'0'+9)%10+'0';
+                if(dead.find(temp)==dead.end() && !visited.count(temp)) {
+                    q.push(temp);
+                    visited.insert(temp);
+                }
             }
-        }
-    }
 
-    turn++;   // ✅ MOVED HERE (after processing level)
-}
-return -1;
+            curr++; // ✅ moved outside for-loop
+        }
+
+        return -1; // ✅ correct final return
     }
 };
