@@ -1,28 +1,28 @@
 class Solution {
 public:
-    int maxTurbulenceSize(vector<int>& nums) {
-        int n=nums.size();
+    int maxTurbulenceSize(vector<int>& arr) {
         bool flip=false;
-        int maxlen=1;
+        int n=arr.size();
         int currlen=1;
+        int maxlen=1;
         for(int i=1;i<n;i++){
-            int curr=nums[i];
-            int prev=nums[i-1];
+            int curr=arr[i];
+            int prev=arr[i-1];
             if(curr==prev){
-                flip=false;
                 currlen=1;
+                flip=false;
             }
-            else if(prev<curr){
-                if(!flip) currlen++;
-                else currlen=2;
-                flip=true;
-            }
-            else{
+            else if(curr<prev){
                 if(flip) currlen++;
                 else currlen=2;
                 flip=false;
             }
-            maxlen=max(currlen, maxlen);
+            else{
+                if(!flip) currlen++;
+                else currlen=2;
+                flip=true;
+            }
+            maxlen=max(maxlen, currlen);
         }
         return maxlen;
     }
