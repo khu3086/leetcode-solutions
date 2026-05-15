@@ -1,8 +1,16 @@
 class Solution {
 public:
     int findMin(vector<int>& nums) {
-        int numRotate=0;
-        while(numRotate+1<nums.size()&&nums[numRotate]<nums[numRotate+1]) numRotate++;
-        return nums[(numRotate+1)%nums.size()];
+        int n=nums.size();
+        int low=0;
+        int high=n-1;
+        while(low<high){
+            int mid=low+(high-low)/2;
+            if(nums[mid]<nums[high]){
+                high=mid;
+            }
+            else low=mid+1;
+        }
+        return nums[low];
     }
 };
