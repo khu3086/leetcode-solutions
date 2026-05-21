@@ -1,19 +1,21 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        int n=nums.size();
-        if(n==0) return n;
-        if(n==1) return nums[0];
-        int curr=nums[0];
-        int vote=0;
-        for(auto x: nums){
-            if(curr==x) vote++;
+        if(nums.size()==0) return 0;
+        int vote=1;
+        int maxEle=nums[0];
+        for(int i=1;i<nums.size();i++){
+            if(maxEle==nums[i]){
+                vote++;
+            }
             else{
-                if(vote<=0) {curr=x; vote=0;}
+                if(vote<=0){
+                    maxEle=nums[i];
+                    vote=0;
+                }
                 else vote--;
             }
         }
-        cout<<vote;
-        return curr;
+        return maxEle;
     }
 };
