@@ -1,6 +1,6 @@
 class MyHashSet {
 public:
-    bitset<1000001> bset;
+bitset<10000001> bset;
     MyHashSet() {
         bset.reset();
     }
