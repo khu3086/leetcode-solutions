@@ -1,67 +1,20 @@
-class Node{
-    public:
-    int key;
-    int value;
-    Node* next;
-    Node(){
-        key=-1;
-        value=-1;
-        next=nullptr;
-    }
-    Node(int k, int v){
-        key=k;
-        value=v;
-        next=nullptr;
-    }
-};
-
 class MyHashMap {
 public:
-    vector<Node*> map;
+    int data[10000001];
     MyHashMap() {
-        map.resize(1000);
-        for(int i=0;i<1000;i++){
-            map[i]=new Node();
-        }
-    }
-
-    int hash_key(int key){
-        return key%1000;
+        fill(data, data+10000001, -1);
     }
     
-    void put(int key, int value) {
-        int hashkey=hash_key(key);
-        Node* curr=map[hashkey];
-        while(curr->next){
-            if(curr->next->key==key)
-            {curr->next->value=value; return;}
-            curr=curr->next;
-        }
-        curr->next=new Node(key, value);
+    void put(int key, int val) {
+        data[key]=val;
     }
     
     int get(int key) {
-        int hashkey=hash_key(key);
-        Node* curr=map[hashkey];
-        while(curr->next){
-            if(curr->next->key==key) return curr->next->value;
-            curr=curr->next;
-        }
-        return -1;
+        return data[key];
     }
     
     void remove(int key) {
-        int hashkey=hash_key(key);
-        Node* curr=map[hashkey];
-        while(curr->next){
-            if(curr->next->key==key){
-                Node* temp=curr->next->next;
-                delete(curr->next);
-                curr->next=temp;
-                return;
-            }
-            curr=curr->next;
-        }
+        data[key]=-1;
     }
 };
 
