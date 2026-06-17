@@ -16,24 +16,24 @@ public:
 
         if (k >= len) return '.';
 
-        for (int i = n - 1;; i--) {
-            switch (s[i]) {
-            case '*':
+        
+        for(int i=n-1;i>=0;i--){
+            int c=s[i];
+            if(c=='*'){
                 len++;
-                break;
-            case '#':
-                if (k >= len / 2)
-                    k -= len / 2;
-                len /= 2;
-                break;
-            case '%':
-                k = len - 1 - k;
-                break;
-            default:
-                if (len == k + 1)
-                    return s[i];
+            }
+            else if(c=='#'){
+                if(k>=len/2) k-=len/2;
+                len/=2;
+            }
+            else if(c=='%'){
+                k=len-k-1;
+            }
+            else{
+                if(len-1==k) return s[i];
                 len--;
             }
         }
+        return '.';
     }
 };
