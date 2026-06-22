@@ -1,26 +1,24 @@
 class Solution {
 public:
-    vector<int> asteroidCollision(vector<int>& ast) {
+    vector<int> asteroidCollision(vector<int>& asteroids) {
         stack<int> stk;
-        for(int i=0;i<ast.size();i++){
-            int incom=ast[i];
-            int flag=true;
-            while(!stk.empty()&&stk.top() > 0 && incom < 0){
+        for(auto incom: asteroids){
+            bool flag=false;
+            while(!stk.empty()&&stk.top()>0&&incom<0){
                 if(abs(stk.top())<abs(incom)){
                     stk.pop();
                 }
                 else if(abs(stk.top())==abs(incom)){
                     stk.pop();
-                    flag=false;
+                    flag=true;
                     break;
                 }
-                else{
-                    flag = false; // incoming destroyed
+                else if(abs(stk.top())>abs(incom)){
+                    flag=true;
                     break;
                 }
             }
-            if(flag)
-            stk.push(incom);
+            if(!flag) stk.push(incom);
         }
         vector<int> ans;
         while(!stk.empty()){
