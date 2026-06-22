@@ -1,42 +1,30 @@
 class Solution {
 public:
-    vector<int> asteroidCollision(vector<int>& asteroids) {
-        stack<pair<int, int>> stk;
-        int n=asteroids.size();
-        for(int i=0;i<n;i++){
-            int mag=asteroids[i];
-            int idx=i;
-            if(stk.empty()){
-                stk.push({mag, idx});
-                continue;
-            }
-            bool canCollide=false;
-            int stkmag=stk.top().first;
-            int stkidx=stk.top().second;
-
-            if(stkmag<0&&mag<0){
-                stk.push({mag, idx});
-            }
-            else if(stkmag>0&&mag<0){
-                canCollide=true;
-                if(stkmag>abs(mag)) continue;
-                else if(stkmag<abs(mag)){
-                    while(!stk.empty()&&stk.top().first>0&&stk.top().first<abs(mag)) stk.pop();
+    vector<int> asteroidCollision(vector<int>& ast) {
+        stack<int> stk;
+        for(int i=0;i<ast.size();i++){
+            int incom=ast[i];
+            int flag=true;
+            while(!stk.empty()&&stk.top() > 0 && incom < 0){
+                if(abs(stk.top())<abs(incom)){
+                    stk.pop();
                 }
-                if(stk.empty()) stk.push({mag, idx});
-                else if(stk.top().first<0) stk.push({mag, idx});
-                else if(stk.top().first==abs(mag)) stk.pop();
-                else continue;
+                else if(abs(stk.top())==abs(incom)){
+                    stk.pop();
+                    flag=false;
+                    break;
+                }
+                else{
+                    flag = false; // incoming destroyed
+                    break;
+                }
             }
-            else if(stkmag>0&&mag>0) stk.push({mag, idx});
-            else{
-                //stkmag<0&&mag>0 
-                stk.push({mag, idx});
-            }
+            if(flag)
+            stk.push(incom);
         }
         vector<int> ans;
         while(!stk.empty()){
-            ans.push_back(stk.top().first);
+            ans.push_back(stk.top());
             stk.pop();
         }
         reverse(ans.begin(), ans.end());
