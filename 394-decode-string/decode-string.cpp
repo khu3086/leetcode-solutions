@@ -1,38 +1,35 @@
 class Solution {
 public:
-    string helper(string &s, int &i) {
-        string ans = "";
-
-        while (i < s.size() && s[i] != ']') {
-
-            if (isalpha(s[i])) {
-                ans += s[i];
+    string helper(string& s, int& i){
+        string ans="";
+        while(i<s.size()&&s[i]!=']'){
+            if(isalpha(s[i])){
+                ans+=s[i];
                 i++;
             }
-            else if (isdigit(s[i])) {
-
-                int num = 0;
-                while (i < s.size() && isdigit(s[i])) {
-                    num = num * 10 + (s[i] - '0');
+            if(isdigit(s[i])){
+                string temp="";
+                while(i<s.size()&&isdigit(s[i])){
+                    temp+=s[i];
                     i++;
                 }
-
-                i++; // skip '['
-
-                string temp = helper(s, i);
-
-                i++; // skip ']'
-
-                while (num--)
-                    ans += temp;
+                i++;
+                string middle=helper(s, i);
+                int num=stoi(temp);
+                while(num){
+                    ans+=middle;
+                    num--;
+                }
             }
+            
         }
-
+        if(i < s.size() && s[i] == ']')
+        i++;  
         return ans;
     }
-
     string decodeString(string s) {
-        int i = 0;
-        return helper(s, i);
+        int i=0;
+        string ans=helper(s, i);
+        return ans;
     }
 };
