@@ -1,27 +1,31 @@
 class Solution {
 public:
-    bool dfs(vector<vector<int>>& adj, vector<bool>& path, vector<bool>& vis, int curr){
-        vis[curr]=true;
-        path[curr]=true;
-        for(auto next: adj[curr]){
-            if(!vis[next]) {
-                if(dfs(adj, path, vis, next)) return true;
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(numCourses);
+        vector<int> indegree(numCourses, 0);
+        for(auto pre: prerequisites){
+            adj[pre[1]].push_back(pre[0]);
+            indegree[pre[0]]++;
+        }
+        queue<int> q;
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i]==0) q.push(i);
+        }
+        int count = 0;
+
+        while (!q.empty()) {
+            int curr = q.front();
+            q.pop();
+            count++;
+
+            for (int next : adj[curr]) {
+                indegree[next]--;
+
+                if (indegree[next] == 0)
+                    q.push(next);
             }
-            else if(path[next]) return true;
         }
-        path[curr]=false;
-        return false;
-    }
-    bool canFinish(int num, vector<vector<int>>& pre) {
-        vector<vector<int>> adj(num);
-        for(auto x: pre){
-            adj[x[0]].push_back(x[1]);
-        }
-        vector<bool> path(num, false);
-        vector<bool> vis(num, false);
-        for(int i=0;i<num;i++){
-            if(dfs(adj, path, vis, i)) return false;
-        }
-        return true;
+
+        return count == numCourses;
     }
 };
