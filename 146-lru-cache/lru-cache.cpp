@@ -39,11 +39,9 @@ tail->next = nullptr;
     int get(int key) {
         if(mp.find(key)!=mp.end()){
             int val=mp[key]->val;
-            deleteNode(mp[key]);
-            mp.erase(key);
-            Node* newNode=new Node(key, val);
-            mp[key]=newNode;
-            addNode(newNode);
+            Node* temp=mp[key];
+            deleteNode(temp);
+            addNode(temp);
             return val;
         }
         return -1;
