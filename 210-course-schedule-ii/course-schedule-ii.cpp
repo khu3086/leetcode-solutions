@@ -1,27 +1,32 @@
 class Solution {
 public:
-    vector<int> findOrder(int num, vector<vector<int>>& pre) {
-        unordered_map<int, vector<int>> map;
-        vector<int> indegree(num, 0);
-        for(auto x: pre){
-            map[x[1]].push_back(x[0]);
-            indegree[x[0]]++;
+    vector<int> findOrder(int n, vector<vector<int>>& prereq) {
+        vector<vector<int>> adj(n);
+        vector<int> indegree(n, 0);
+        for(auto p: prereq){
+            adj[p[0]].push_back(p[1]);
+            indegree[p[1]]++;
         }
         queue<int> q;
-        for(int i=0;i<num;i++){
+        for(int i=0;i<n;i++){
             if(indegree[i]==0) q.push(i);
         }
         vector<int> ans;
+        vector<bool> vis(n, false);
         while(!q.empty()){
-            int top=q.front();
+            int node=q.front();
             q.pop();
-            ans.push_back(top);
-            for(auto x: map[top]){
-                indegree[x]--;
-                if(indegree[x]==0) q.push(x);
+            ans.push_back(node);
+            vis[node]=true;
+            for(auto nxt: adj[node]){
+                if(vis[nxt]) continue;
+                indegree[nxt]--;
+                if(indegree[nxt]==0) q.push(nxt);
             }
         }
-        if(ans.size()<num) return {};
+        if(ans.size() != n)
+    return {};
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };
