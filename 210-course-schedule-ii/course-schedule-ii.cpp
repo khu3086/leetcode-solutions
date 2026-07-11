@@ -3,30 +3,27 @@ public:
     vector<int> findOrder(int n, vector<vector<int>>& prereq) {
         vector<vector<int>> adj(n);
         vector<int> indegree(n, 0);
-        for(auto p: prereq){
-            adj[p[0]].push_back(p[1]);
-            indegree[p[1]]++;
-        }
         queue<int> q;
-        for(int i=0;i<n;i++){
-            if(indegree[i]==0) q.push(i);
+        for(auto p: prereq){
+            adj[p[1]].push_back(p[0]);
+            indegree[p[0]]++;
         }
         vector<int> ans;
         vector<bool> vis(n, false);
+        for(int i=0;i<n;i++){
+            if(indegree[i]==0) {q.push(i); vis[i]=true;}
+        }
         while(!q.empty()){
-            int node=q.front();
+            int top=q.front();
             q.pop();
-            ans.push_back(node);
-            vis[node]=true;
-            for(auto nxt: adj[node]){
-                if(vis[nxt]) continue;
+            ans.push_back(top);
+            for(auto nxt: adj[top]){
                 indegree[nxt]--;
-                if(indegree[nxt]==0) q.push(nxt);
+                if(indegree[nxt]==0&&!vis[nxt]) q.push(nxt);
             }
         }
-        if(ans.size() != n)
-    return {};
-        reverse(ans.begin(), ans.end());
-        return ans;
+        //reverse(ans.begin(), ans.end());
+        if(ans.size()==n) return ans;
+        return {};
     }
 };
