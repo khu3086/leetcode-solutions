@@ -1,63 +1,43 @@
 class Solution {
 public:
-    bool dfs(vector<vector<vector<pair<int,int>>>>& adj,
-             int i, int j,
-             int pi, int pj,
-             vector<vector<bool>>& vis) {
+    vector<vector<int>> dir={{0,1},{0,-1},{1,0},{-1,0}};
+    int m,n;
 
-        vis[i][j] = true;
+    bool dfs(vector<vector<char>>& grid, vector<vector<bool>>& vis,
+             int i, int j, int ni, int nj){
+        if(i<0||j<0||i>=m||j>=n) return false;
 
-        for (auto nxt : adj[i][j]) {
-            int ni = nxt.first;
-            int nj = nxt.second;
+        vis[i][j]=true;
 
-            if (!vis[ni][nj]) {
-                if (dfs(adj, ni, nj, i, j, vis))
+        for(auto d:dir){
+            int x=i+d[0];
+            int y=j+d[1];
+
+            if(x>=0&&y>=0&&x<m&&y<n&&grid[x][y]==grid[i][j]){
+                if(!vis[x][y]){
+                    if(dfs(grid,vis,x,y,i,j))
+                        return true;
+                }
+                else if(!(x==ni&&y==nj)){
                     return true;
-            }
-            else if (ni != pi || nj != pj) {
-                return true;
+                }
             }
         }
-
         return false;
     }
 
     bool containsCycle(vector<vector<char>>& grid) {
-        int m = grid.size();
-        int n = grid[0].size();
+        m=grid.size();
+        n=grid[0].size();
 
-        vector<vector<vector<pair<int,int>>>> adj(
-            m, vector<vector<pair<int,int>>>(n));
+        vector<vector<bool>> vis(m,vector<bool>(n,false));
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-
-                if (i > 0 && grid[i-1][j] == grid[i][j])
-                    adj[i][j].push_back({i-1, j});
-
-                if (i < m-1 && grid[i+1][j] == grid[i][j])
-                    adj[i][j].push_back({i+1, j});
-
-                if (j > 0 && grid[i][j-1] == grid[i][j])
-                    adj[i][j].push_back({i, j-1});
-
-                if (j < n-1 && grid[i][j+1] == grid[i][j])
-                    adj[i][j].push_back({i, j+1});
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(!vis[i][j] && dfs(grid,vis,i,j,-1,-1))
+                    return true;
             }
         }
-
-        vector<vector<bool>> vis(m, vector<bool>(n, false));
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (!vis[i][j]) {
-                    if (dfs(adj, i, j, -1, -1, vis))
-                        return true;
-                }
-            }
-        }
-
         return false;
     }
 };
