@@ -1,15 +1,18 @@
 class Solution {
 public:
     int numSquares(int n) {
-        int num=(int)sqrt(n);
-        vector<int> mynums;
-        for(int i=1;i<=num;i++) mynums.push_back(i*i);
+        int newNum=(int)(sqrt(n));
+        newNum*=newNum;
+        vector<int> nums;
+        for(int i=1;i<=newNum;i++){
+            nums.push_back(i*i);
+        }
         vector<int> dp(n+1, INT_MAX);
         dp[0]=0;
         for(int i=1;i<=n;i++){
-            for(auto x: mynums){
-                if(i>=x&&dp[i-x]!=INT_MAX){
-                    dp[i]=min(dp[i-x]+1, dp[i]);
+            for(auto num: nums){
+                if(i>=num&&dp[i-num]!=INT_MAX){
+                    dp[i]=min(dp[i], dp[i-num]+1);
                 }
             }
         }
