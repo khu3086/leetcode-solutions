@@ -1,37 +1,30 @@
 class Solution {
 public:
-    int minimumEffortPath(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
-        vector<vector<int>> dir={{0,1}, {0, -1}, {1, 0}, {-1, 0}};
-        priority_queue<
-    pair<int, pair<int,int>>,
-    vector<pair<int, pair<int,int>>>,
-    greater<pair<int, pair<int,int>>>
-> pq;
-        vector<vector<bool>> visited(m, vector<bool>(n, false));
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m=heights.size();
+        int n=heights[0].size();
         vector<vector<int>> dist(m, vector<int>(n, INT_MAX));
+        dist[0][0]=0;
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
         pq.push({0, {0, 0}});
+        vector<vector<int>> dir={{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         while(!pq.empty()){
-            auto top=pq.top();
-            pq.pop();
-            int currDist=top.first;
+            auto top=pq.top(); pq.pop();
+            int distance=top.first;
             int i=top.second.first;
             int j=top.second.second;
-            if(visited[i][j]) continue;
-            visited[i][j]=true;
-            if(i==m-1&&j==n-1) return currDist;
+            if(i==m-1&&j==n-1) return distance;
             for(auto d: dir){
-                int x=i+d[0]; int y=j+d[1];
+                int x=d[0]+i;
+                int y=d[1]+j;
                 if(x>=0&&x<m&&y>=0&&y<n){
-                    if(visited[x][y]) continue;
-                    int nextDist=abs(grid[i][j]-grid[x][y]);
-                    if(nextDist>dist[x][y]) continue;
-                    dist[x][y]=max(currDist, nextDist);
+                    int newEffort = max(distance, abs(heights[x][y] - heights[i][j]));
+                    if(newEffort>=dist[x][y]) continue;
+                    dist[x][y]=newEffort;
                     pq.push({dist[x][y], {x, y}});
                 }
             }
         }
-        return dist[m-1][n-1];
+        return -1;
     }
 };
