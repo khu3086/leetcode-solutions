@@ -7,10 +7,9 @@ public:
         dp[0]=true;
         int reachable=0;
         for(int i=1;i<n;i++){
-            if(i-minJump>=0&&dp[i-minJump])
-            reachable++;
+            if(i-minJump>=0&&dp[i-minJump]) reachable++;
             if(i-maxJump-1>=0&&dp[i-maxJump-1]) reachable--;
-            dp[i]=(reachable>0&&s[i]=='0');
+            if(reachable>0&&s[i]=='0') dp[i]=true;
         }
         return dp[n-1];
     }
