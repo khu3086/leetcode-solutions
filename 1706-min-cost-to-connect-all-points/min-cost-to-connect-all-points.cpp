@@ -1,9 +1,7 @@
 class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {
-        //create adj list;
         int n=points.size();
-        //node-> idx number, and dist)
         vector<vector<pair<int, int>>> adj(n);
         for(int i=0;i<n;i++){
             for(int j=i+1;j<n;j++){
@@ -12,27 +10,25 @@ public:
                 adj[j].push_back({i, dist});
             }
         }
-        //prims algo-> min heap pf {dist, dest}
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        vector<bool> inMST(n, false);
         pq.push({0, 0});
         int sum=0;
-        //int lastnode=0;
+        vector<bool> vis(n, false);
         while(!pq.empty()){
-            auto [dist, node]=pq.top();
-            //lastnode=node;
+            auto top=pq.top();
             pq.pop();
-            if(inMST[node]) continue;
-            inMST[node]=true;
-            sum+=dist;
-            for(auto nei: adj[node]){
-                int child=nei.first;
+            int topdist=top.first;
+            int topnode=top.second;
+            if(!vis[topnode])
+            {sum+=topdist;
+            vis[topnode]=true;
+            for(auto nei: adj[topnode]){
                 int childdist=nei.second;
-                if(inMST[(child)]){
-                    continue;
+                int childnode=nei.first;
+                if(!vis[childnode]){
+                    pq.push({childdist, childnode});
                 }
-                pq.push({childdist, child});
-            }
+            }}
         }
         return sum;
     }
