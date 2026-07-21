@@ -1,16 +1,16 @@
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        vector<int> tails;
-        for(auto num: nums){
-            auto it=lower_bound(tails.begin(), tails.end(), num);
-            if(it==tails.end()){
-                tails.push_back(num);
+        vector<int> tail;
+        for(int i=0;i<nums.size();i++){
+            auto it=lower_bound(tail.begin(), tail.end(), nums[i]);
+            if(it==tail.end()){
+                tail.push_back(nums[i]);
             }
             else{
-                *it=num;
+                *it=nums[i];
             }
         }
-        return tails.size();
+        return tail.size();
     }
 };
