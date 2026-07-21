@@ -6,11 +6,9 @@ public:
         dp[0]=true;
         for(int i=1;i<=n;i++){
             for(auto word: wordDict){
-                if(i>=word.length()){
-                    string tmp=s.substr(i-word.length(), word.length());
-                    if(tmp==word){
-                        dp[i]=dp[i-word.length()]||dp[i];
-                    }
+                int len=word.size();
+                if(i-len>=0&&s.substr(i-len, len)==word){
+                    dp[i]=dp[i-len]||dp[i];
                 }
             }
         }
