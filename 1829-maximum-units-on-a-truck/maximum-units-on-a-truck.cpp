@@ -10,10 +10,9 @@ public:
         while(!heap.empty()&&sz){
             auto [unit, num]=heap.top();
             heap.pop();
-            num--;
-            count+=unit;
-            if(num>0) heap.push({unit, num});
-            sz--;
+            int take=min(sz, num);
+            sz-=take;
+            count+=take*unit;
         }
         return count;
     }
