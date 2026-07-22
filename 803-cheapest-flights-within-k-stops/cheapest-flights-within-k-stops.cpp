@@ -2,38 +2,21 @@ class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
         vector<vector<pair<int, int>>> adj(n);
-        queue<pair<int, int>> pq;
-        pq.push({0, src});
-        vector<int> distance(n, INT_MAX);
-        int hop=0;
-        distance[src]=0;
         for(auto f: flights){
-            int u=f[0];
-            int v=f[1];
-            int price=f[2];
-            adj[u].push_back({v, price});
+            adj[f[0]].push_back({f[1], f[2]});
         }
-        while(!pq.empty()&&hop<=k){
-            hop++;
-            int sz=pq.size();
-            vector<int> temp = distance; 
-            while (sz--) {
-    auto [dist, node] = pq.front();
-    pq.pop();
-
-    if (dist > distance[node])
-        continue;
-
-    for (auto [currnode, currdist] : adj[node]) {
-        if (dist + currdist < temp[currnode]) {
-            temp[currnode] = dist + currdist;
-            pq.push({dist + currdist, currnode});
+        vector<int> dist(n, INT_MAX);
+        dist[src]=0;
+        for(int i=0;i<=k;i++){
+            vector<int> temp=dist;
+            for(auto f: flights){
+                int u=f[0], v=f[1], price=f[2];
+                if(dist[u]!=INT_MAX)
+                temp[v]=min(temp[v], dist[u]+price);
+            }
+            dist=temp;
         }
-    }
-}
-            distance=temp;
-        }
-        if(distance[dst]==INT_MAX) return -1;
-        return distance[dst];
+        if(dist[dst]==INT_MAX) return -1;
+        return dist[dst];
     }
 };
