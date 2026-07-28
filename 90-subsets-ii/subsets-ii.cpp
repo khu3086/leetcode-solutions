@@ -1,34 +1,33 @@
 class Solution {
 public:
-    void recurse(vector<vector<int>>& ans, int i, int n,
-                 vector<int> nums, vector<int> curr) {
+    void subset(vector<vector<int>>& ans, vector<int>& nums, vector<int> curr, int i){
+        
+        if(i==nums.size()){
+            ans.push_back(curr);
+            return;
+        }
+        // Take nums[i]
+        curr.push_back(nums[i]);
+        subset(ans, nums, curr, i + 1);
+        curr.pop_back();
 
-        ans.push_back(curr);
-
-        int j = i;
-
-        while(j < n) {
-            curr.push_back(nums[j]);
-
-            recurse(ans, j + 1, n, nums, curr);
-
-            curr.pop_back();
-
-            while(j + 1 < n && nums[j] == nums[j + 1])
-                j++;
-
+        // Don't take nums[i]
+        // Skip all duplicates of nums[i]
+        int j = i + 1;
+        while(j < nums.size() && nums[j] == nums[i]) {
             j++;
         }
-    }
 
+        subset(ans, nums, curr, j);
+        
+    }
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         sort(nums.begin(), nums.end());
+
         vector<vector<int>> ans;
-        int n = nums.size();
-        int i = 0;
         vector<int> curr;
 
-        recurse(ans, i, nums.size(), nums, curr);
+        subset(ans, nums, curr, 0);
 
         return ans;
     }
