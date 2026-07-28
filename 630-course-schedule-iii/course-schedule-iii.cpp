@@ -1,18 +1,18 @@
 class Solution {
 public:
     int scheduleCourse(vector<vector<int>>& courses) {
+        for(auto& x: courses){
+            reverse(x.begin(), x.end());
+        }
+        sort(courses.begin(), courses.end());
         priority_queue<pair<int, int>> pq;
-        int currDeadline=0;
-        sort(courses.begin(), courses.end(),
-     [](vector<int>& a, vector<int>& b) {
-         return a[1] < b[1];
-     });
+        int currTime=0;
         for(int i=0;i<courses.size();i++){
-            currDeadline+=courses[i][0];
-            pq.push({courses[i][0], courses[i][1]});
-            if(!pq.empty()&&currDeadline>courses[i][1]){
+            currTime+=courses[i][1];
+            pq.push({courses[i][1], courses[i][0]});
+            if(currTime>courses[i][0]){
                 auto top=pq.top(); pq.pop();
-                currDeadline-=top.first;
+                currTime-=top.first;
             }
         }
         return pq.size();
