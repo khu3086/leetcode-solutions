@@ -3,15 +3,22 @@ public:
     string smallestPalindrome(string s) {
         int n=s.length();
         if(n<=2) return s;
-        if(n%2)
-        {sort(s.begin(), s.begin()+n/2);
-        sort(s.begin()+n/2+1, s.end());
-        reverse(s.begin()+n/2+1, s.end());}
-        else{
-            sort(s.begin(), s.begin()+n/2);
-        sort(s.begin()+n/2, s.end());
-        reverse(s.begin()+n/2, s.end());
+        string temp="";
+        if(n%2==0){
+            temp=s.substr(0, n/2);
+            sort(temp.begin(), temp.end());
+            string temp2=temp;
+            reverse(temp2.begin(), temp2.end());
+            temp+=temp2;
         }
-        return s;
+        else{
+            temp=s.substr(0, n/2);
+            sort(temp.begin(), temp.end());
+            string temp2=temp;
+            reverse(temp2.begin(), temp2.end());
+            temp+=s[n/2];
+            temp+=temp2;
+        }
+        return temp;
     }
 };
